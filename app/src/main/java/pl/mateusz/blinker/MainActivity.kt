@@ -4,15 +4,12 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.Composable
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import pl.mateusz.blinker.modules.navigation.NavigationRoutes
-import pl.mateusz.blinker.ui.screens.HomeScreen
-import pl.mateusz.blinker.ui.screens.LoginTokenScreen
+import pl.mateusz.blinker.ui.screens.LoginScreen
+import pl.mateusz.blinker.ui.screens.MainScreen
 import pl.mateusz.blinker.ui.theme.BlinkerTheme
 
 class MainActivity : ComponentActivity() {
@@ -26,7 +23,7 @@ class MainActivity : ComponentActivity() {
                 // change startDestination later
                 NavHost(navController = navController, startDestination = NavigationRoutes.Outer.LoginScreen) {
                     composable(NavigationRoutes.Outer.LoginScreen) {
-                        LoginTokenScreen(
+                        LoginScreen(
                             onLoginNav = {
                                 navController.navigate(NavigationRoutes.Outer.MainScreen)
                             }
@@ -38,7 +35,7 @@ class MainActivity : ComponentActivity() {
                         BackHandler(true) {
 
                         }
-                        HomeScreen()
+                        MainScreen()
                     }
                 }
             }

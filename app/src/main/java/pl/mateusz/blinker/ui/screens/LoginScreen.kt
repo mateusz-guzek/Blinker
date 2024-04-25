@@ -1,15 +1,12 @@
 package pl.mateusz.blinker.ui.screens
 
 import android.content.Context
-import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -24,14 +21,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
-import androidx.navigation.NavHostController
+import pl.mateusz.blinker.ui.theme.BlinkerTheme
 
 @Composable
-fun LoginTokenScreen(
+fun LoginScreen(
     context: Context = LocalContext.current,
     onLoginNav: () -> Unit
 ) {
@@ -39,10 +37,10 @@ fun LoginTokenScreen(
     val login = remember {
         mutableStateOf("")
     }
-
-    val isTokenLengthValid = remember {
-        mutableStateOf(true)
+    val password = remember {
+        mutableStateOf("")
     }
+
     Surface(
         modifier = Modifier
             .fillMaxSize(),
@@ -61,51 +59,39 @@ fun LoginTokenScreen(
                         .fillMaxWidth(),
                     textAlign = TextAlign.Center,
                     fontSize = 16.em,
-                    fontFamily = FontFamily.Serif,
+                    fontFamily = FontFamily.Default,
                     fontWeight = FontWeight.Bold
                 )
                 Text(
-                    text = "Enter your Baselinker API token below in order to see your " +
+                    text = "Login to your Baselinker account below in order to see your " +
                             "sales and more!",
                     modifier = Modifier
                         .fillMaxWidth()
                 )
                 OutlinedTextField(
                     value = login.value,
-                    onValueChange = {
-                        login.value = it
-                        if (login.value.length != 80) {
-                            isTokenLengthValid.value = false
-                        } else {
-                            isTokenLengthValid.value = true
-                        }
-                                    },
-                    minLines = 3,
-                    maxLines = 3,
+                    onValueChange = { login.value = it },
+                    label = { Text(text = "E-mail")},
                     modifier = Modifier
-                        .fillMaxWidth(),
-                    keyboardOptions = KeyboardOptions(
-                        keyboardType = KeyboardType.Ascii,
-                        autoCorrect = false
-                    ),
-                    isError = !isTokenLengthValid.value,
-                    label = {
-                        if (isTokenLengthValid.value) {
-                            Text(text = "Your BLToken")
-                        } else {
-                            Text(text = "Your BLToken - not valid!")
-                        }
-                    }
+                        .fillMaxWidth()
                 )
+                OutlinedTextField(
+                    value = password.value,
+                    onValueChange = { password.value = it },
+                    label = { Text(text = "Password")},
+                    visualTransformation = PasswordVisualTransformation(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                )
+
             }
             Button(
                 onClick = {
 
                     // TODO just make it a login to a baselinker account with login+password, if
-                    // TODO it can fetch api token then it's logged in
-                    // TODO change to "login.value.length != 80"
+                    // TODO navigate to main screen if it retrieves session token
                     if (false) {
-                        isTokenLengthValid.value = false
+
                     } else {
                         //navigateOnLogin()
                         onLoginNav()
@@ -131,3 +117,13 @@ fun LoginTokenScreen(
 }
 
 
+
+@Preview(showSystemUi = true)
+@Composable
+fun LoginPreview() {
+    BlinkerTheme {
+        LoginScreen {
+
+        }
+    }
+}

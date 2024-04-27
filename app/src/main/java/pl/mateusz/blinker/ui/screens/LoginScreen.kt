@@ -1,6 +1,7 @@
 package pl.mateusz.blinker.ui.screens
 
 import android.content.Context
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -8,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.Surface
@@ -88,7 +88,6 @@ fun LoginScreen(
             Button(
                 onClick = {
 
-                    // TODO just make it a login to a baselinker account with login+password, if
                     // TODO navigate to main screen if it retrieves session token
                     if (false) {
 
@@ -99,12 +98,13 @@ fun LoginScreen(
 
                 },
                 shape = RoundedCornerShape(10),
-                colors = ButtonDefaults.buttonColors(),
                 modifier = Modifier
                     .padding(horizontal = 64.dp)
+                    .background(MaterialTheme.colorScheme.primary)
                     .fillMaxWidth()
             ){
                 Text(
+                    color = MaterialTheme.colorScheme.onPrimary,
                     text = "Login",
                     fontWeight = FontWeight.Bold)
 

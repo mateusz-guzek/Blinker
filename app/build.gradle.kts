@@ -53,6 +53,7 @@ dependencies {
 
 
 
+    implementation(libs.jsoup.jsoup)
     implementation(libs.androidx.material)
     implementation(libs.okhttp)
     implementation(libs.androidx.core.ktx)

@@ -1,7 +1,6 @@
 package pl.mateusz.blinker.ui.screens
 
 import android.content.Context
-import android.util.Log
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -22,6 +21,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -36,8 +36,10 @@ import androidx.compose.ui.unit.em
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import pl.mateusz.blinker.modules.navigation.NavigationRoutes
+import pl.mateusz.blinker.ui.screens.pages.AccountPage
 import pl.mateusz.blinker.ui.screens.pages.OrdersPage
 import pl.mateusz.blinker.ui.screens.pages.SettingsPage
 import pl.mateusz.blinker.ui.screens.pages.StartPage
@@ -78,6 +80,9 @@ fun MainScreen(
                 }
                 composable(NavigationRoutes.Inner.SettingsPage) {
                     SettingsPage()
+                }
+                composable(NavigationRoutes.Inner.AccountPage) {
+                    AccountPage()
                 }
 
             }
@@ -143,7 +148,11 @@ fun CategoryButton(
 ) {
 
     // TODO make an active button have a different tint
-    val selected = navCon.currentBackStackEntry?.destination?.route == destination
+
+    // BUG lepiej zebym mial na to oko bo to sie chyba często psuje
+    val currentBackStackEntry by navCon.currentBackStackEntryAsState()
+    val currentRoute = currentBackStackEntry?.destination?.route.toString()
+    val selected = currentRoute == destination
 
     Column(
         horizontalAlignment = Alignment.CenterHorizontally,
@@ -153,7 +162,7 @@ fun CategoryButton(
             .width(50.dp)
             .clip(RoundedCornerShape(10.dp))
             .clickable {
-                Log.d("AHA", selected.toString())
+                //Log.d("AHA", "$destination $currentRoute")
                 if (!selected) {
                     navCon.navigate(destination)
                 }

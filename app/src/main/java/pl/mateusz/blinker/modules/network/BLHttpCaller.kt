@@ -8,7 +8,6 @@ import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.RequestBody.Companion.toRequestBody
 import okhttp3.Response
-import pl.mateusz.blinker.modules.utilities.ApiTokenParser
 
 
 class BLHttpCaller(private val client: OkHttpClient) {
@@ -53,7 +52,8 @@ class BLHttpCaller(private val client: OkHttpClient) {
             override fun onResponse(call: Call, response: Response) {
 
                 // if error is around here then change how parsing works or just invalid credentials
-                val token = ApiTokenParser.parse(response)
+                // if token is empty then handle it in ui
+                val token = BLApiTokenParser.parse(response)
                 then(token)
             }
             override fun onFailure(call: Call, e: java.io.IOException) {

@@ -12,18 +12,26 @@ class BLSessionCookieManager : CookieJar {
     override fun loadForRequest(url: HttpUrl): List<Cookie> {
 
         // Remove expired Cookies
-        storage.removeIf {
-            it.expiresAt < System.currentTimeMillis()
+        storage.removeIf {cookie ->
+            cookie.expiresAt < System.currentTimeMillis()
         }
         //storage.removeIf(cookie -> cookie.expiresAt() < System.currentTimeMillis())
 
         // Only return matching Cookies
-        return storage.filter {
-            cookie -> cookie.matches(url)
+        return storage.filter { cookie ->
+            cookie.matches(url)
         }
     }
-
     override fun saveFromResponse(url: HttpUrl, cookies: List<Cookie>) {
-        storage.addAll(cookies)
+        for (newCookie in cookies) {
+            val existingCookie = storage.find {
+                it.name == newCookie.name && it.domain == newCookie.domain
+            }
+            if (existingCookie != null) {
+                storage.remove(existingCookie)
+            }
+            storage.add(newCookie)
+
+        }
     }
 }

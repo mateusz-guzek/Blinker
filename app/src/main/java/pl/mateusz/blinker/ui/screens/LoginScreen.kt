@@ -28,14 +28,20 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import kotlinx.coroutines.launch
 import pl.mateusz.blinker.modules.services.BLService
+import pl.mateusz.blinker.modules.storage.Account
+import pl.mateusz.blinker.modules.storage.DataStorage
+import pl.mateusz.blinker.modules.utils.toast
 import pl.mateusz.blinker.ui.theme.BlinkerTheme
+
 
 @Composable
 fun LoginScreen(
     context: Context = LocalContext.current,
     onLoginNav: () -> Unit = {}
 ) {
+    val storage = DataStorage.getInstance()
     val scope = rememberCoroutineScope()
 
     val login = remember {
@@ -103,10 +109,26 @@ fun LoginScreen(
                             BLService.getApiToken {token ->
                                 Log.d("TOKEN", token)
 
+                                if ( token.isBlank()) {
+
+                                    scope.launch {
+                                        context.toast("Invalid login or/and password")
+                                    }
+
+                                } else {
+                                    val account = Account(
+                                        email = login.value,
+                                        apiToken = token)
+                                    storage.db.getAccountDao().insertAccount(account)
+                                    scope.launch {
+                                        onLoginNav()
+                                    }
+
+                                }
+
                             }
                         }
 
-                        //onLoginNav()
                     }
 
                 },

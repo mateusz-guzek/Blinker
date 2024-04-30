@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.em
 
 
 @Composable
-fun StartPage() {
+fun HomePage() {
     Column(
         modifier = Modifier
             .fillMaxSize()

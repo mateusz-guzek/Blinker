@@ -1,6 +1,7 @@
 package pl.mateusz.blinker.modules.storage
 
 import androidx.room.Dao
+import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
@@ -13,6 +14,9 @@ interface AccountDao {
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAccount(account: Account)
+
+    @Delete
+    fun deleteAccount(account: Account)
 
 
     // i had plans for app to be able to keep track of multiple baselinker accounts

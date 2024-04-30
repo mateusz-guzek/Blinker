@@ -2,6 +2,7 @@ package pl.mateusz.blinker.ui.screens
 
 import android.content.Context
 import android.util.Log
+import androidx.activity.compose.BackHandler
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -25,20 +26,21 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
+import androidx.navigation.NavHostController
 import kotlinx.coroutines.launch
 import pl.mateusz.blinker.modules.services.BLService
 import pl.mateusz.blinker.modules.storage.Account
 import pl.mateusz.blinker.modules.storage.DataStorage
+import pl.mateusz.blinker.modules.utils.getMainAccountID
 import pl.mateusz.blinker.modules.utils.toast
-import pl.mateusz.blinker.ui.theme.BlinkerTheme
 
 
 @Composable
 fun LoginScreen(
     context: Context = LocalContext.current,
+    navCon: NavHostController, // spaghetti gets stronger gotta fix that
     onLoginNav: () -> Unit = {}
 ) {
     val storage = DataStorage.getInstance()
@@ -49,6 +51,15 @@ fun LoginScreen(
     }
     val password = remember {
         mutableStateOf("")
+    }
+
+
+    BackHandler(true) {
+        if(context.getMainAccountID() != -1) {
+            navCon.popBackStack()
+        }
+
+
     }
 
     Surface(
@@ -105,6 +116,7 @@ fun LoginScreen(
                     } else {
                         //navigateOnLogin()
                         // TODO Call baselinker instead of mock api and save token,login,pass to database
+
                         BLService.login(login.value, password.value) {
 
                             BLService.getApiToken {token ->
@@ -150,16 +162,4 @@ fun LoginScreen(
     }
 
 
-}
-
-
-
-@Preview(showSystemUi = true)
-@Composable
-fun LoginPreview() {
-    BlinkerTheme {
-        LoginScreen {
-
-        }
-    }
 }

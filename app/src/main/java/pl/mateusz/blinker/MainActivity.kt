@@ -33,6 +33,7 @@ class MainActivity : ComponentActivity() {
                 NavHost(navController = navController, startDestination = NavigationRoutes.Outer.MainScreen) {
                     composable(NavigationRoutes.Outer.LoginScreen) {
                         LoginScreen(
+                            navCon = navController,
                             onLoginNav = {
                                 navController.navigate(NavigationRoutes.Outer.MainScreen)
                             }
@@ -44,7 +45,11 @@ class MainActivity : ComponentActivity() {
                         BackHandler(true) {
 
                         }
-                        MainScreen()
+                        MainScreen(
+                            navBackToLogin = {
+                                navController.navigate(NavigationRoutes.Outer.LoginScreen)
+                            }
+                        )
                     }
                 }
             }

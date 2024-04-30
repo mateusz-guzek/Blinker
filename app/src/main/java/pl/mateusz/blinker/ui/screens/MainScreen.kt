@@ -5,7 +5,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.BottomNavigation
 import androidx.compose.material.icons.Icons
@@ -21,6 +21,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.SideEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
@@ -30,7 +31,6 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.em
 import androidx.navigation.NavHostController
@@ -38,23 +38,40 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import kotlinx.coroutines.launch
 import pl.mateusz.blinker.modules.navigation.NavigationRoutes
+import pl.mateusz.blinker.modules.storage.DataStorage
 import pl.mateusz.blinker.ui.screens.pages.AccountPage
+import pl.mateusz.blinker.ui.screens.pages.HomePage
 import pl.mateusz.blinker.ui.screens.pages.OrdersPage
 import pl.mateusz.blinker.ui.screens.pages.SettingsPage
-import pl.mateusz.blinker.ui.screens.pages.StartPage
 import pl.mateusz.blinker.ui.screens.pages.StatsPage
-import pl.mateusz.blinker.ui.theme.BlinkerTheme
 
 
 @Composable
 fun MainScreen(
+    navBackToLogin: () -> Unit,
     context: Context = LocalContext.current
 ) {
     val navController = rememberNavController()
 
     val snackbarHostState = remember { SnackbarHostState() }
     val scope = rememberCoroutineScope()
+
+    SideEffect {
+        Thread { // tu jest inny thread
+            val accountsAmount = DataStorage.getInstance().db.accounts().getAllAccounts().size
+            if(accountsAmount <=0) {
+
+                scope.launch {// a tu juz jest glowny thread
+                    navBackToLogin()          // polak to zawsze wymysli
+                }
+
+            }
+        }.start()
+
+    }
+
 
     Scaffold(
         snackbarHost = { SnackbarHost(hostState = snackbarHostState)},
@@ -70,7 +87,7 @@ fun MainScreen(
                 startDestination = NavigationRoutes.Inner.AccountPage, //TODO change later
                 modifier = Modifier.padding(padding)) {
                 composable(NavigationRoutes.Inner.HomePage) {
-                    StartPage()
+                    HomePage()
                 }
                 composable(NavigationRoutes.Inner.OrdersPage) {
                     OrdersPage()
@@ -82,7 +99,7 @@ fun MainScreen(
                     SettingsPage()
                 }
                 composable(NavigationRoutes.Inner.AccountPage) {
-                    AccountPage()
+                    AccountPage(navigateToLoginPage = navBackToLogin)
                 }
 
             }
@@ -134,7 +151,7 @@ fun BottomNavBar(
             navCon = navCon,
             destination = NavigationRoutes.Inner.AccountPage,
             icon = Icons.Default.AccountBox,
-            description = "Account")
+            description = "Accounts")
     }
 }
 
@@ -159,7 +176,7 @@ fun CategoryButton(
         verticalArrangement = Arrangement.SpaceEvenly,
         modifier = Modifier
             .padding(10.dp)
-            .width(50.dp)
+            .wrapContentWidth()
             .clip(RoundedCornerShape(10.dp))
             .clickable {
                 //Log.d("AHA", "$destination $currentRoute")
@@ -180,13 +197,6 @@ fun CategoryButton(
     }
 }
 
-@Preview(device = "id:pixel_5", showSystemUi = true)
-@Composable
-fun MainScreenPreview() {
-    BlinkerTheme {
-        MainScreen()
-    }
-}
 
 
 

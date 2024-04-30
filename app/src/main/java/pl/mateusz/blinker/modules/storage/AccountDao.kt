@@ -2,6 +2,7 @@ package pl.mateusz.blinker.modules.storage
 
 import androidx.room.Dao
 import androidx.room.Insert
+import androidx.room.OnConflictStrategy
 import androidx.room.Query
 
 /*
@@ -10,11 +11,12 @@ import androidx.room.Query
 @Dao
 interface AccountDao {
 
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insertAccount(account: Account)
 
 
-    // i have plans for app to be able to keep track of multiple baselinker accounts
+    // i had plans for app to be able to keep track of multiple baselinker accounts
+    // these plans were fullfilled
     @Query("SELECT * from accounts")
     fun getAllAccounts(): Array<Account>
 

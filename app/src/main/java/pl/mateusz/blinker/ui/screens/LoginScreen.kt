@@ -98,9 +98,10 @@ fun LoginScreen(
             Button(
                 onClick = {
 
-                    // TODO navigate to main screen if it retrieves session token
-                    if (false) {
-
+                    if (login.value.isBlank() || password.value.isBlank()) {
+                        scope.launch {
+                            context.toast("Invalid login or/and password")
+                        }
                     } else {
                         //navigateOnLogin()
                         // TODO Call baselinker instead of mock api and save token,login,pass to database
@@ -119,7 +120,7 @@ fun LoginScreen(
                                     val account = Account(
                                         email = login.value,
                                         apiToken = token)
-                                    storage.db.getAccountDao().insertAccount(account)
+                                    storage.db.accounts().insertAccount(account)
                                     scope.launch {
                                         onLoginNav()
                                     }

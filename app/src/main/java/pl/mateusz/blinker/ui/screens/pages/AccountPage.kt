@@ -74,6 +74,7 @@ fun AccountItem(
     onClick: () -> Unit = {}) {
     Column(
         modifier = Modifier
+            .padding(4.dp)
             .fillMaxWidth()
             .height(96.dp)
 

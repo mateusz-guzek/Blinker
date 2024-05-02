@@ -1,4 +1,4 @@
-package pl.mateusz.blinker.modules.storage
+package pl.mateusz.blinker.modules.storage.models
 
 import androidx.room.Dao
 import androidx.room.Delete

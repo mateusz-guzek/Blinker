@@ -43,8 +43,8 @@ import androidx.compose.ui.unit.em
 import androidx.compose.ui.window.Popup
 import androidx.compose.ui.window.PopupProperties
 import kotlinx.coroutines.launch
-import pl.mateusz.blinker.modules.storage.Account
 import pl.mateusz.blinker.modules.storage.DataStorage
+import pl.mateusz.blinker.modules.storage.models.Account
 import pl.mateusz.blinker.modules.utils.getMainAccountID
 import pl.mateusz.blinker.modules.utils.setMainAccountID
 import pl.mateusz.blinker.ui.theme.BlinkerTheme

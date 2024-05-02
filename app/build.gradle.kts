@@ -57,6 +57,7 @@ dependencies {
 
 
 
+    implementation(libs.kotlinx.serialization.json)
     implementation(libs.jsoup.jsoup)
     implementation(libs.androidx.material)
     implementation(libs.okhttp)

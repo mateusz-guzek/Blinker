@@ -31,8 +31,8 @@ import androidx.compose.ui.unit.em
 import androidx.navigation.NavHostController
 import kotlinx.coroutines.launch
 import pl.mateusz.blinker.modules.services.BLService
-import pl.mateusz.blinker.modules.storage.Account
 import pl.mateusz.blinker.modules.storage.DataStorage
+import pl.mateusz.blinker.modules.storage.models.Account
 import pl.mateusz.blinker.modules.utils.getMainAccountID
 import pl.mateusz.blinker.modules.utils.toast
 

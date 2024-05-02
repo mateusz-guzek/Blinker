@@ -84,7 +84,7 @@ fun MainScreen(
 
             NavHost(
                 navController = navController,
-                startDestination = NavigationRoutes.Inner.AccountPage, //TODO change later
+                startDestination = NavigationRoutes.Inner.OrdersPage, //TODO change later to homePage
                 modifier = Modifier.padding(padding)) {
                 composable(NavigationRoutes.Inner.HomePage) {
                     HomePage()

@@ -1,9 +1,9 @@
-package pl.mateusz.blinker.modules.storage
+package pl.mateusz.blinker.modules.storage.models
 
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-// TODO use shared preferences to keep track of the main account that is used to show all data in app
+// DONE use shared preferences to keep track of the main account that is used to show all data in app
 @Entity(tableName = "accounts")
 data class Account(var email: String, var apiToken: String) {
 
